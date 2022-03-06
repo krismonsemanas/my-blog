@@ -4,15 +4,14 @@ import Head from 'next/head'
 // own components
 import { PostCard, Category, PostWidget } from '../components'
 
-const posts = [
-  { title: 'Hello Next.js', excerpt: 'This is the content' },
-  {
-    title: 'Awesome next project',
-    excerpt: 'Build awesome project with next js',
-  },
-]
+// services
+import { getPosts } from '../services/'
 
-const Home: NextPage = () => {
+type Posts = {
+  posts: []
+}
+
+const Home: NextPage<Posts> = ({ posts }) => {
   return (
     <div className=" container mx-auto mb-8 px-10 ">
       <Head>
@@ -22,8 +21,8 @@ const Home: NextPage = () => {
 
       <div className=" grid grid-cols-1 gap-12 lg:grid-cols-12">
         <div className="col-span-1 lg:col-span-8">
-          {posts.map((post) => (
-            <PostCard key={post.title} {...post} />
+          {posts.map((post, index) => (
+            <PostCard key={index} post={post['node']} />
           ))}
         </div>
         <div className="col-span-1 lg:col-span-4">
@@ -35,6 +34,15 @@ const Home: NextPage = () => {
       </div>
     </div>
   )
+}
+
+export async function getStaticProps() {
+  const posts = (await getPosts()) || []
+
+  // console.log(posts)
+  return {
+    props: { posts },
+  }
 }
 
 export default Home
