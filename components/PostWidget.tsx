@@ -50,7 +50,9 @@ const PostWidget = ({ categories, slug }: PostWidgetProps) => {
               {moment(relatedPost.createdAt).format('MMM DD, YYYY')}
             </p>
             <Link href={`/post/${relatedPost.slug}`} key={relatedPost.slug}>
-              <span className="text-md">{relatedPost.title}</span>
+              <span className="text-md cursor-pointer">
+                {relatedPost.title}
+              </span>
             </Link>
           </div>
         </div>
