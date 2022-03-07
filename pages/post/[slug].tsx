@@ -19,7 +19,7 @@ type Props = {
   post: Post
 }
 
-const PostDetail = ({ post }: Props) => {
+const PostDetail = ({ post }: any) => {
   return (
     <div className="container mx-auto mb-8 px-10">
       <Head>
