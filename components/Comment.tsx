@@ -2,14 +2,15 @@ import React, { useEffect, useState } from 'react'
 import moment from 'moment'
 import parser from 'html-react-parser'
 
-type CommentProps = {
+type paramProps = {
   slug: string
 }
 
 import { getComments } from '../services'
+import { IComment } from '../interfaces'
 
-const Comment = ({ slug }: CommentProps) => {
-  const [comments, setComments] = useState([])
+const Comment = ({ slug }: paramProps) => {
+  const [comments, setComments] = useState<Array<IComment>>([])
 
   useEffect(() => {
     getComments(slug).then((res) => setComments(res))

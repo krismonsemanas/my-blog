@@ -10,7 +10,7 @@ type categoryType = {
   name: string
 }
 
-const Category: React.FC<Category> = () => {
+const Category = () => {
   const [categories, setCategroies] = useState<Category>([])
 
   useEffect(() => {
