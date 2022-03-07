@@ -1,5 +1,4 @@
 import React from 'react'
-// import Head from 'next/head'
 
 // services
 import { getPosts, getPostBySlug } from '../../services'
@@ -47,10 +46,10 @@ const PostDetail = ({ post }: Props) => {
 }
 
 export async function getStaticProps({ params }: any) {
-  const post = await getPostBySlug(params.slug)
+  const data = await getPostBySlug(params.slug)
   return {
     props: {
-      post: post,
+      post: data,
     },
   }
 }
