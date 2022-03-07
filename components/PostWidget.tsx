@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { getRecentPosts, getSimilarPosts } from '../services'
 
 type PostWidgetProps = {
-  categories: Object
+  categories?: Array<string>
   slug?: string
 }
 
@@ -13,9 +13,10 @@ const PostWidget = ({ categories, slug }: PostWidgetProps) => {
 
   useEffect(() => {
     if (slug) {
-      getSimilarPosts(categories, slug).then((result) =>
-        setRelatedPosts(result)
-      )
+      getSimilarPosts(
+        categories?.map((category: any) => category.slug),
+        slug
+      ).then((result) => setRelatedPosts(result))
     } else {
       getRecentPosts().then((result) => setRelatedPosts(result))
     }

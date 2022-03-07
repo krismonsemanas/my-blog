@@ -1,3 +1,4 @@
+import { Category } from './index'
 interface Post {
   createdAt: string
   slug: string
@@ -14,10 +15,7 @@ interface Post {
   featuredImage: {
     url: string
   }
-  categories: {
-    slug: string
-    name: string
-  }
+  categories: Category[]
   content: {
     raw: any
   }

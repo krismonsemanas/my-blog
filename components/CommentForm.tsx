@@ -26,8 +26,6 @@ const CommentForm = ({ slug }: slugPropType) => {
     storeData: false,
   })
 
-  console.log('formData', formData)
-
   const handleSubmitComment = () => {
     setError(false)
 
