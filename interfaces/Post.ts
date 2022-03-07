@@ -18,9 +18,9 @@ interface Post {
     slug: string
     name: string
   }
-  // content: {
-  //   raw: any
-  // }
+  content: {
+    raw: any
+  }
 }
 
 export default Post
