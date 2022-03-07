@@ -7,12 +7,7 @@ type PostProps = {
 }
 
 const PostDetailCard = ({ post }: PostProps) => {
-  const getContentFragment = (
-    index: number,
-    text: any,
-    obj: any,
-    type: any
-  ) => {
+  const getContentFragment = (index: any, text: any, obj: any, type: any) => {
     let modifiedText = text
 
     if (obj) {
