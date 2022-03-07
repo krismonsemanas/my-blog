@@ -4,6 +4,10 @@ import { useRouter } from 'next/router'
 
 // services
 import { getCategories } from '../services'
+type categoryType = {
+  slug: string
+  name: string
+}
 
 const Header = () => {
   const [categories, setCategroies] = useState([])
@@ -24,7 +28,7 @@ const Header = () => {
           </Link>
         </div>
         <div className="hidden md:float-left md:contents">
-          {categories.map((category) => (
+          {categories.map((category: categoryType) => (
             <Link key={category.slug} href={`/category/${category.slug}`}>
               <span
                 className={`mt-2 ml-4 cursor-pointer align-middle font-semibold text-white md:float-right ${
