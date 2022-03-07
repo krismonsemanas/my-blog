@@ -9,7 +9,7 @@ import {
 import { PostCard, Categories, Loader } from '../../components'
 import Head from 'next/head'
 
-const CategoryPost = ({ posts, categoryName }) => {
+const CategoryPost = ({ posts, categoryName }: any) => {
   const router = useRouter()
 
   if (router.isFallback) {
@@ -24,7 +24,7 @@ const CategoryPost = ({ posts, categoryName }) => {
       </Head>
       <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
         <div className="col-span-1 lg:col-span-8">
-          {posts.map((post, index) => (
+          {posts.map((post: any, index: number) => (
             <PostCard key={index} post={post.node} />
           ))}
         </div>
@@ -40,7 +40,7 @@ const CategoryPost = ({ posts, categoryName }) => {
 export default CategoryPost
 
 // Fetch data at build time
-export async function getStaticProps({ params }) {
+export async function getStaticProps({ params }: any) {
   const posts = await getCategoryPost(params.slug)
   const categoryName = await GetCategoryBySlug(params.slug)
 
@@ -54,7 +54,7 @@ export async function getStaticProps({ params }) {
 export async function getStaticPaths() {
   const categories = await getCategories()
   return {
-    paths: categories.map(({ slug }) => ({ params: { slug } })),
+    paths: categories.map(({ slug }: any) => ({ params: { slug } })),
     fallback: true,
   }
 }
