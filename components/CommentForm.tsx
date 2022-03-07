@@ -1,88 +1,103 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, EffectCallback } from 'react'
 import { submitComment } from '../services'
 
 // interface
 import { ICommentForm } from '../interfaces'
 
-const CommentForm = ({ slug }: ICommentForm) => {
-  const [error, setError] = useState(false)
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false)
-  const [localStorage, setLocalStorage] = useState(null)
-  const [formData, setFormData] = useState({
-    name: null,
-    email: null,
-    comment: null,
+type slugPropType = {
+  slug: string
+}
+
+type formHandler = {
+  name: string
+  email: string
+  comment: string
+  storeData: boolean
+}
+
+const CommentForm = ({ slug }: slugPropType) => {
+  const [error, setError] = useState<Boolean>(false)
+  const [showSuccessMessage, setShowSuccessMessage] = useState<Boolean>(false)
+  const [localStorage, setLocalStorage] = useState<Object>({})
+  const [formData, setFormData] = useState<formHandler>({
+    name: '',
+    email: '',
+    comment: '',
     storeData: false,
   })
 
-  const commentEl = useRef()
-  const nameEl = useRef()
-  const emailEl = useRef()
-  const storeDataEl = useRef()
-
-  const onInputChange = (e) => {
-    const { target } = e
-    if (target.type === 'checkbox') {
-      setFormData((prevState) => ({
-        ...prevState,
-        [target.name]: target.checked,
-      }))
-    } else {
-      setFormData((prevState) => ({
-        ...prevState,
-        [target.name]: target.value,
-      }))
-    }
-  }
+  console.log('formData', formData)
 
   const handleSubmitComment = () => {
     setError(false)
 
-    const { value: comment } = commentEl.current
-    const { value: name } = nameEl.current
-    const { value: email } = emailEl.current
-    const { value: storeData } = storeDataEl.current
-
-    if (!comment || !name || !email) {
+    const { name, email, comment, storeData } = formData
+    if (!name || !email || !comment) {
       setError(true)
-      return
     }
 
-    const commentObj = { name, email, comment, slug }
+    const commentObj = {
+      name,
+      email,
+      comment,
+      slug,
+    }
 
     if (storeData) {
-      window.localStorage.setItem('name', name)
-      window.localStorage.setItem('email', email)
+      window.localStorage.setItem('name', formData.name)
+      window.localStorage.setItem('email', formData.email)
     } else {
-      window.localStorage.removeItem('name')
-      window.localStorage.removeItem('email')
+      window.localStorage.clear()
     }
 
     submitComment(commentObj).then((res) => {
+      formData.comment = ''
       if (res.createComment) {
         if (!storeData) {
           formData.name = ''
           formData.email = ''
+
+          setFormData((prevState) => ({ ...prevState, ...formData }))
+
+          setShowSuccessMessage(true)
+          setTimeout(() => {
+            setShowSuccessMessage(false)
+          }, 3000)
+          formData.comment = ''
         }
-        formData.comment = ''
-        setFormData((prevState) => ({
-          ...prevState,
-          ...formData,
-        }))
-        setShowSuccessMessage(true)
-        setTimeout(() => {
-          setShowSuccessMessage(false)
-        }, 3000)
       }
     })
+  }
+
+  const onInputChange = (e: React.FormEvent<HTMLInputElement>): void => {
+    if (e.currentTarget.type == 'checkbox') {
+      setFormData({
+        ...formData,
+        [e.currentTarget.name]: e.currentTarget.checked,
+      })
+    } else {
+      setFormData({
+        ...formData,
+        [e.currentTarget.name]: e.currentTarget.value,
+      })
+    }
   }
 
   useEffect(() => {
     setLocalStorage(window.localStorage)
 
     const intialFormData = {
-      name: window.localStorage.getItem('name'),
-      email: window.localStorage.getItem('email'),
+      name: `${
+        window.localStorage.getItem('name')
+          ? window.localStorage.getItem('name')
+          : ''
+      }`,
+      email: `${
+        window.localStorage.getItem('email')
+          ? window.localStorage.getItem('email')
+          : ''
+      }`,
+      comment: '',
       storeData:
         window.localStorage.getItem('name') ||
         window.localStorage.getItem('email')
@@ -100,7 +115,13 @@ const CommentForm = ({ slug }: ICommentForm) => {
       </h3>
       <div className="gird mb-4 grid-cols-1 gap-4">
         <textarea
-          ref={commentEl}
+          value={formData.comment}
+          onChange={(e: React.FormEvent<HTMLTextAreaElement>): void =>
+            setFormData({
+              ...formData,
+              [e.currentTarget.name]: e.currentTarget.value,
+            })
+          }
           className="foucs:ring-2 w-full rounded-lg bg-gray-200 p-4 text-gray-700 outline-none focus:ring-gray-100"
           placeholder="Comment"
           name="comment"
@@ -109,17 +130,17 @@ const CommentForm = ({ slug }: ICommentForm) => {
       <div className="mb-4 grid grid-cols-1 gap-4 lg:grid-cols-2">
         <input
           type="text"
+          value={formData.name}
           onChange={onInputChange}
-          ref={nameEl}
           name="name"
           placeholder="Your Name"
           className="w-full rounded-lg bg-gray-100 py-2 px-4 text-gray-700 outline-none focus:ring-2 focus:ring-gray-200"
         />
         <input
-          type="text"
-          ref={emailEl}
+          type="email"
           onChange={onInputChange}
           name="email"
+          value={formData.email}
           placeholder="Your Email"
           className="w-full rounded-lg bg-gray-100 py-2 px-4 text-gray-700 outline-none focus:ring-2 focus:ring-gray-200"
         />
@@ -127,13 +148,12 @@ const CommentForm = ({ slug }: ICommentForm) => {
       <div className="gird gird-cols-1 mb-4 gap-4">
         <div>
           <input
-            type="text"
-            ref={storeDataEl}
             onChange={onInputChange}
             type="checkbox"
             id="storeData"
             name="storeData"
             value="true"
+            checked={formData.storeData}
           />
           <label
             className="ml-2 cursor-pointer text-gray-500"

@@ -1,5 +1,5 @@
 interface ICommonForm {
-  slu: string
+  slug: string
 }
 
 export default ICommonForm
