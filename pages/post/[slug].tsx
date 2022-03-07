@@ -19,7 +19,7 @@ type Props = {
   post: Post
 }
 
-const PostDetail = ({ post }: any) => {
+const PostDetail = ({ post }: Props) => {
   return (
     <div className="container mx-auto mb-8 px-10">
       <Head>
@@ -45,8 +45,6 @@ const PostDetail = ({ post }: any) => {
   )
 }
 
-export default PostDetail
-
 export async function getStaticProps({ params }: any) {
   const post = await getPostBySlug(params.slug)
   return {
@@ -67,3 +65,5 @@ export async function getStaticPaths() {
     fallback: true,
   }
 }
+
+export default PostDetail
