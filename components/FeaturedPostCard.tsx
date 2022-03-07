@@ -2,8 +2,13 @@ import React from 'react'
 import moment from 'moment'
 import Image from 'next/image'
 import Link from 'next/link'
+import { Post } from '../interfaces'
 
-const FeaturedPostCard = ({ post }) => (
+type post = {
+  post: Post
+}
+
+const FeaturedPostCard = ({ post }: post) => (
   <div className="relative h-72">
     <div
       className="absolute inline-block h-72 w-full rounded-lg bg-cover bg-center bg-no-repeat shadow-md"
