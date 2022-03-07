@@ -1,6 +1,4 @@
-interface Category {
-  name: string
+export interface Category {
   slug: string
+  name: string
 }
-
-export default Category
