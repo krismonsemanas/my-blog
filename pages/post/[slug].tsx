@@ -1,5 +1,5 @@
 import React from 'react'
-import Head from 'next/head'
+// import Head from 'next/head'
 
 // services
 import { getPosts, getPostBySlug } from '../../services'
@@ -22,10 +22,10 @@ type Props = {
 const PostDetail = ({ post }: Props) => {
   return (
     <div className="container mx-auto mb-8 px-10">
-      <Head>
+      {/* <Head>
         <title>{post.title}</title>
         <link rel="icon" href="/favicon.ico" />
-      </Head>
+      </Head> */}
       <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
         <div className="col-span-1 lg:col-span-8">
           <PostDetailCard post={post} />
