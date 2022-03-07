@@ -4,17 +4,9 @@ import Link from 'next/link'
 import { getRecentPosts, getSimilarPosts } from '../services'
 
 type PostWidgetProps = {
-  categories?: string
+  categories: Object
   slug?: string
 }
-
-// type PostWidgetState = {
-//   relatedPosts: []
-// }
-
-// interface RelatedPostProps {
-//   relatedPosts: []
-// }
 
 const PostWidget = ({ categories, slug }: PostWidgetProps) => {
   const [relatedPosts, setRelatedPosts] = useState([])
@@ -34,7 +26,7 @@ const PostWidget = ({ categories, slug }: PostWidgetProps) => {
       <h3 className="mb-8 border-b pb-4 text-xl font-semibold">
         {slug ? 'Related Post' : 'Recent Posts'}
       </h3>
-      {relatedPosts.map((relatedPost) => (
+      {relatedPosts.map((relatedPost: any) => (
         <div className="mb-4 flex w-full items-center" key={relatedPost.slug}>
           <div className="w-16 flex-none">
             <img
