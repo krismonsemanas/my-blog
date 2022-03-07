@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 
 import { GraphQLClient, gql } from 'graphql-request'
 
-const graphqlAPI = process.env.NEXT_PUBLIC_GRAPHCMS_ENDPOINT
+const graphqlAPI: string = `${process.env.NEXT_PUBLIC_GRAPHCMS_ENDPOINT}`
 const grapcmsApiToken = process.env.NEXT_PUPLIC_GRAPHCMS_API_TOKEN
 
 type Data = {
@@ -43,7 +43,7 @@ export default async function comment(
   try {
     const result = await client.request(query, req.body)
     return res.status(200).json(result)
-  } catch (error) {
-    return res.status(500).json({ error: error.message })
+  } catch (error: any) {
+    return res.status(500).json(error)
   }
 }
