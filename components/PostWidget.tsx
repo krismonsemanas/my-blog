@@ -4,8 +4,8 @@ import Link from 'next/link'
 import { getRecentPosts, getSimilarPosts } from '../services'
 
 type PostWidgetProps = {
-  categories: string
-  slug: string
+  categories?: string
+  slug?: string
 }
 
 // type PostWidgetState = {
@@ -25,7 +25,7 @@ const PostWidget = ({ categories, slug }: PostWidgetProps) => {
         setRelatedPosts(result)
       )
     } else {
-      getRecentPosts(categories, slug).then((result) => setRelatedPosts(result))
+      getRecentPosts().then((result) => setRelatedPosts(result))
     }
   }, [slug])
 
